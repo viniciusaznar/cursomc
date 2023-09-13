@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,8 +22,18 @@ public class Categoria implements Serializable {
 	private Integer id;
 	private String nome;
 
-	@ManyToMany(mappedBy="categorias")
+	@JsonManagedReference
+	@ManyToMany(mappedBy = "categorias")
 	private List<Produto> produtos = new ArrayList<>();
+
+	public Categoria(Integer id, String nome) {
+		super();
+		this.id = id;
+		this.nome = nome;
+	}
+
+	public Categoria() {
+	}
 
 	public List<Produto> getProdutos() {
 		return produtos;
@@ -29,23 +41,6 @@ public class Categoria implements Serializable {
 
 	public void setProdutos(List<Produto> produtos) {
 		this.produtos = produtos;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Categoria other = (Categoria) obj;
-		return Objects.equals(id, other.id);
 	}
 
 	public Integer getId() {
@@ -64,13 +59,21 @@ public class Categoria implements Serializable {
 		this.nome = nome;
 	}
 
-	public Categoria(Integer id, String nome) {
-		super();
-		this.id = id;
-		this.nome = nome;
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
 	}
 
-	public Categoria() {
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Categoria other = (Categoria) obj;
+		return Objects.equals(id, other.id);
 	}
 
 }
